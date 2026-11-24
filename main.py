@@ -61,6 +61,13 @@ def main(argv) -> int:
     with open(out_path, "w", encoding="utf-8", newline="\n") as f:
         f.write(LINE + "\n")
 
+    # Read the file back and confirm it holds exactly the validated line:
+    # a silent short write must never pass as a valid entry.
+    with open(out_path, "r", encoding="utf-8", newline="") as f:
+        written = f.read()
+    if written != LINE + "\n":
+        raise ValueError("verification failed: entry.txt does not match the entry")
+
     print("wrote %s (%d chars)" % (out_path, len(LINE)))
     print(LINE)
     return 0
